@@ -1,6 +1,7 @@
 import os
 import hashlib
 import filecmp
+import time
 
 rootmac = '/'
 print(os.listdir('/Volumes'))
@@ -23,15 +24,24 @@ for rootmac,dirs,files in os.walk(rootmac):
                     hashermd5.update(buffmd5)
                     with open('/Volumes/'+ mydrive +'/acquired_hash.txt', 'a') as myFile:
                         myFile.write(file + '\n' + hashermd5.hexdigest() + '\n')
+                    print(hashermd5.hexdigest())
             except:
                 continue
+myFile.close()
+
+print('\n' + '\n' + '\n' + 'RESULTS')
+
+file1 = open('/Volumes/'+ mydrive +'/acquired_hash.txt')
+file2 = open('/Volumes/'+ mydrive +'/names_and_hashes.txt')
+file3 = open('/Volumes/'+ mydrive +'/found.txt', 'a')
+
+mytargets = [lines.strip() for lines in file2]
+myacquired = [lines.strip() for lines in file1]
+for line in myacquired:
+    if line in mytargets:
+        found = line
+        file3.write(found + '\n')
+        print(found + '\n')
 
 
-
-file1 = open('/Volumes/'+ mydrive +'/acquired_hash.txt', 'r')
-file2 = open('/Volumes/'+ mydrive +'/names_and_hashes.txt', 'r')
-file3 = open('/Volumes/'+ mydrive +'/foundmatches.txt', 'a')
-
-
-
-print('SEARCH COMPLETE')
+print('\n' + '\n' + '\n' + 'SEARCH COMPLETE! CHECK FOUND.TXT FOR RESULTS!')
